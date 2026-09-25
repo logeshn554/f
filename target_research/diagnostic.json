@@ -1,0 +1,168 @@
+{
+  "built_at": "2026-09-25T15:24:30.322125+00:00",
+  "source_sha256": "f3734fd5dab9708e70ccbbfdd46a8b173aa3b242f45212aa2c057f399ab26c0b",
+  "first_decision": "2026-06-28T13:15:00+00:00",
+  "last_decision": "2026-09-25T07:15:00+00:00",
+  "decisions": 8521,
+  "failed_gate_counts": {
+    "Conservative net edge": 8515,
+    "Reward covers friction": 5354,
+    "Context similarity": 51,
+    "Historical support": 20
+  },
+  "positive_mean_plans": 599,
+  "positive_utility_plans": 6,
+  "max_sample_win_pct": 77.70293588989387,
+  "variants": {
+    "baseline": {
+      "development": {
+        "strategy": "research-ablation-baseline",
+        "mode": "LOCAL PAPER ONLY",
+        "equity": 99.56013713695583,
+        "cash": 99.56013713695583,
+        "return_pct": -0.43986286304417144,
+        "closed_trades": 5,
+        "wins": 2,
+        "win_rate_pct": 40.0,
+        "profit_factor": 0.05063039231617537,
+        "max_observed_drawdown_pct": 0.5881811688501104,
+        "funding_reserve_debits": 0.0011405030441513139,
+        "position": null,
+        "halt": null,
+        "daily_halt": false,
+        "last_quote": 1788020999,
+        "start": "2026-06-28T13:30:00+00:00",
+        "end": "2026-08-29T16:30:00+00:00",
+        "confidence_interval": [
+          11.76182311592533,
+          76.9280067791163
+        ],
+        "buy_hold_return_pct": 54.65640690708431
+      },
+      "chronological_test": {
+        "strategy": "research-ablation-baseline",
+        "mode": "LOCAL PAPER ONLY",
+        "equity": 100,
+        "cash": 100,
+        "return_pct": 0.0,
+        "closed_trades": 0,
+        "wins": 0,
+        "win_rate_pct": null,
+        "profit_factor": null,
+        "max_observed_drawdown_pct": 0,
+        "funding_reserve_debits": 0,
+        "position": null,
+        "halt": null,
+        "daily_halt": false,
+        "last_quote": 1790321399,
+        "start": "2026-08-29T16:30:00+00:00",
+        "end": "2026-09-25T07:30:00+00:00",
+        "confidence_interval": null,
+        "buy_hold_return_pct": 9.263279018745795
+      }
+    },
+    "mean_edge_only": {
+      "development": {
+        "strategy": "research-ablation-mean_edge_only",
+        "mode": "LOCAL PAPER ONLY",
+        "equity": 95.09494698129795,
+        "cash": 95.09494698129795,
+        "return_pct": -4.905053018702043,
+        "closed_trades": 43,
+        "wins": 13,
+        "win_rate_pct": 30.232558139534884,
+        "profit_factor": 0.2754811245455023,
+        "max_observed_drawdown_pct": 5.07301117504837,
+        "funding_reserve_debits": 0.018318298701999552,
+        "position": null,
+        "halt": "max_drawdown",
+        "daily_halt": false,
+        "last_quote": 1788020999,
+        "start": "2026-06-28T13:30:00+00:00",
+        "end": "2026-08-29T16:30:00+00:00",
+        "confidence_interval": [
+          18.601827946182873,
+          45.10564575240983
+        ],
+        "buy_hold_return_pct": 54.65640690708431
+      },
+      "chronological_test": {
+        "strategy": "research-ablation-mean_edge_only",
+        "mode": "LOCAL PAPER ONLY",
+        "equity": 95.1047776010793,
+        "cash": 95.1047776010793,
+        "return_pct": -4.895222398920696,
+        "closed_trades": 31,
+        "wins": 4,
+        "win_rate_pct": 12.903225806451612,
+        "profit_factor": 0.05263290711836085,
+        "max_observed_drawdown_pct": 5.041098651820864,
+        "funding_reserve_debits": 0.01185306892067332,
+        "position": null,
+        "halt": "max_drawdown",
+        "daily_halt": false,
+        "last_quote": 1790321399,
+        "start": "2026-08-29T16:30:00+00:00",
+        "end": "2026-09-25T07:30:00+00:00",
+        "confidence_interval": [
+          5.134201164644764,
+          28.852756954385356
+        ],
+        "buy_hold_return_pct": 9.263279018745795
+      }
+    },
+    "sample_win_90": {
+      "development": {
+        "strategy": "research-ablation-sample_win_90",
+        "mode": "LOCAL PAPER ONLY",
+        "equity": 100,
+        "cash": 100,
+        "return_pct": 0.0,
+        "closed_trades": 0,
+        "wins": 0,
+        "win_rate_pct": null,
+        "profit_factor": null,
+        "max_observed_drawdown_pct": 0,
+        "funding_reserve_debits": 0,
+        "position": null,
+        "halt": null,
+        "daily_halt": false,
+        "last_quote": 1788020999,
+        "start": "2026-06-28T13:30:00+00:00",
+        "end": "2026-08-29T16:30:00+00:00",
+        "confidence_interval": null,
+        "buy_hold_return_pct": 54.65640690708431
+      },
+      "chronological_test": {
+        "strategy": "research-ablation-sample_win_90",
+        "mode": "LOCAL PAPER ONLY",
+        "equity": 100,
+        "cash": 100,
+        "return_pct": 0.0,
+        "closed_trades": 0,
+        "wins": 0,
+        "win_rate_pct": null,
+        "profit_factor": null,
+        "max_observed_drawdown_pct": 0,
+        "funding_reserve_debits": 0,
+        "position": null,
+        "halt": null,
+        "daily_halt": false,
+        "last_quote": 1790321399,
+        "start": "2026-08-29T16:30:00+00:00",
+        "end": "2026-09-25T07:30:00+00:00",
+        "confidence_interval": null,
+        "buy_hold_return_pct": 9.263279018745795
+      }
+    }
+  },
+  "target_achieved": false,
+  "limitations": [
+    "Previously viewed data; no untouched holdout or prospective evidence.",
+    "Three hypotheses fixed before this diagnostic run; no winning variant auto-deployed.",
+    "Mean-edge ablation removes only entry uncertainty gate; exits keep v4 rules.",
+    "Sample win percentages are fitted conditional summaries, not predicted success probabilities.",
+    "Replays retain sizing, fees, spread, slippage, funding reserve and risk halts.",
+    "Trades and drawdowns are not independent; Wilson intervals are descriptive only."
+  ]
+}

@@ -1,0 +1,6 @@
+__pycache__/
+guard_live/
+delta_run*/
+*.sqlite3
+*.sqlite3-wal
+*.sqlite3-shm

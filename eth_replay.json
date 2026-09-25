@@ -1,0 +1,76 @@
+{
+  "instrument": "ETH-USD",
+  "timeframe": "daily",
+  "source": "trading\\eth_report.candles.csv",
+  "last_completed_candle": "2026-09-24",
+  "close": 2687.28,
+  "latest": {
+    "sma20": 2547.6485000000002,
+    "sma100": 2064.081,
+    "rsi14": 66.21004566210048,
+    "atr14": 114.90142857142862,
+    "signal": false,
+    "regime": "uptrend"
+  },
+  "next_open_signal": "WAIT",
+  "assumptions": {
+    "fee_per_side": 0.001,
+    "slippage_per_side": 0.0005,
+    "risk_fraction": 0.005,
+    "starting_cash_per_period": 10000,
+    "leverage": 1
+  },
+  "development": {
+    "start": "2026-03-11",
+    "end": "2026-07-06",
+    "trades": 1,
+    "win_rate_pct": 0.0,
+    "win_rate_95pct_interval": [
+      0.0,
+      79.34567085261071
+    ],
+    "net_return_pct": -0.4955722927929451,
+    "max_close_drawdown_pct": 0.4955722927929451,
+    "profit_factor": 0.0,
+    "mean_trade_pnl": -49.5572,
+    "buy_hold_return_pct": -11.975319902148062,
+    "trade_log": [
+      {
+        "entry_date": "2026-05-16",
+        "exit_date": "2026-05-17",
+        "pnl": -49.5572,
+        "reason": "stop"
+      }
+    ]
+  },
+  "holdout": {
+    "start": "2026-07-07",
+    "end": "2026-09-24",
+    "trades": 1,
+    "win_rate_pct": 100.0,
+    "win_rate_95pct_interval": [
+      20.654329147389294,
+      100.0
+    ],
+    "net_return_pct": 0.7032945844266614,
+    "max_close_drawdown_pct": 0.34412716965905865,
+    "profit_factor": null,
+    "mean_trade_pnl": 70.3295,
+    "buy_hold_return_pct": 48.974407888286066,
+    "trade_log": [
+      {
+        "entry_date": "2026-09-11",
+        "exit_date": "2026-09-21",
+        "pnl": 70.3295,
+        "reason": "target"
+      }
+    ]
+  },
+  "limitations": [
+    "Fixed unoptimized rules; no 90% win-rate or profit guarantee.",
+    "Small single-asset sample; holdout is a historical simulation, not live validation.",
+    "Daily OHLC cannot reconstruct intraday paths; stop-first assumption; gaps can exceed risk budget.",
+    "Fees and slippage are estimates. Taxes, liquidity impact and outages excluded.",
+    "Drawdown uses daily closes; profit factor null means undefined, not zero."
+  ]
+}

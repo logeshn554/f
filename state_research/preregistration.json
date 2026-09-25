@@ -1,0 +1,31 @@
+{
+  "created_at": "2026-09-25T15:28:07.329975+00:00",
+  "code_sha256": "29ad9bbc0387540f4946e6d648682cca2ed5ab0fcf0f17c9b22e9ec1ec2321e5",
+  "start": "2025-06-20T00:00:00+00:00",
+  "end": "2026-06-20T00:00:00+00:00",
+  "actions": [
+    [
+      1,
+      1.5
+    ],
+    [
+      -1,
+      1.5
+    ],
+    [
+      1,
+      2.5
+    ],
+    [
+      -1,
+      2.5
+    ]
+  ],
+  "win_thresholds": [
+    0,
+    0.6,
+    0.9
+  ],
+  "test_start_fraction": 0.75,
+  "note": "Rules saved before requesting this disjoint historical cohort. No live deployment."
+}
