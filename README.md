@@ -1,37 +1,100 @@
-# Ethereum mathematical research tool
+# Ethereum Paper-Trading Research & Validation Engine
 
-**Active model: [Candle Paths v4](CANDLE_PATHS.md)** — custom candle geometry and historical scenario analysis, BUY/SELL/WAIT, dynamic take-profit/stop-loss, and the live $100 paper dashboard. No profitable edge or 90% win rate has been established.
+**Ethereum Paper-Trading Research & Validation Engine** — Research and validate Ethereum paper-trading algorithms targeting at least 90% winning closed trades and positive net returns after realistic trading costs. All evaluation must be chronological and out-of-sample, uncertainty must be reported explicitly, failed hypotheses must remain visible, and no real-money order execution is permitted.
 
-**Live $100 dashboard:** see [GUARD_GUIDE.md](GUARD_GUIDE.md) and run `start_guard.ps1`. ETH Guard v3 adds hourly trend confirmation, dynamic volatility exits, a persistent forward paper account, and visual research results. The measured strategy has not established profitability.
+> [!IMPORTANT]
+> **Current Status: TARGET NOT ESTABLISHED**
+> Evaluated strategies currently yield fewer than 100 out-of-sample closed trades or fail the 90% lower confidence interval bound. The validation gate strictly outputs `TARGET_NOT_ESTABLISHED`.
 
-For the new Delta Exchange connection and 15-minute long/short paper broker, see [DELTA_PAPER.md](DELTA_PAPER.md). The original daily research tool below remains separate.
+---
 
-Python standard library only. No API key, LLM, packages, or exchange account. No order execution.
+## Core Features & Design Principles
 
-Run with Python 3.10+ from this folder:
+1. **Canonical Entry Point**: `research_validation.py` acts as the single authority allowed to output `TARGET_SUPPORTED` or `TARGET_NOT_ESTABLISHED`.
+2. **Anchored Walk-Forward Cross Validation**: 5 chronological out-of-sample folds with strict embargo periods preventing boundary data leakage.
+3. **Realistic Exchange Cost Model & 2× Stress Testing**: Models Delta Exchange public fees, 18% GST tax, spread, adverse slippage, continuous funding debits, and integer contracts. Mandatory 2× friction stress test.
+4. **Uncertainty Quantification**: Calculates both Wilson Score 95% Confidence Intervals and Block-Bootstrap 95% Confidence Intervals.
+5. **Strict Safety Boundary**: Prohibits API keys, live credentials, or order POST endpoints. Standard library Python only.
 
-```powershell
-python eth_quant.py --output eth_report.json
-python eth_quant.py --csv your_eth_daily.csv --fee-bps 10 --slippage-bps 5
-python -m unittest discover -s . -p "test_*.py"
+---
+
+## Project Structure
+
+```text
+f/
+├── data/
+│   └── immutable/               # Immutable historical candle datasets
+├── experiments/
+│   ├── manifests/               # Frozen experiment configuration manifests
+│   └── results/                 # Machine-readable experiment outputs & failure logs
+├── strategies/
+│   ├── candle_paths.py          # Candle Geometry Path strategy
+│   ├── eth_guard.py             # Trend + RSI + Volatility strategy
+│   └── baselines.py             # Baseline benchmarks (MA crossover, Buy & Hold)
+├── research/
+│   ├── chronological_split.py   # Chronological fold generator with embargo
+│   ├── walk_forward.py          # Anchored walk-forward CV engine
+│   ├── cost_model.py            # Fee/GST/slippage/funding & 2x stress model
+│   ├── uncertainty.py           # Wilson & Block-Bootstrap CIs
+│   ├── metrics.py               # Comprehensive trade performance metrics
+│   └── validation.py            # Canonical Target Gate decision authority
+├── paper/
+│   ├── broker.py                # Local key-free paper simulation broker
+│   ├── market_data.py           # Candle validation and loaders
+│   └── forward_evidence.py      # Prospective forward paper tracking
+├── tests/                       # Unit test suite verifying leakage, costs, and safety
+├── reports/
+│   └── validation_report.json   # Machine-readable output report
+├── RESEARCH_PROTOCOL.md         # Detailed research protocol documentation
+└── README.md
 ```
 
-The default downloads up to 299 completed UTC daily ETH-USD candles from Coinbase's public endpoint. It saves the input candles beside the report for reproducibility. Offline CSV columns: `date,open,high,low,close`; ISO dates ascending, one row per daily candle, at least 240 rows. Use consistent prices from a single market.
+---
 
-## Fixed strategy
+## Quick Start
 
-At a completed daily close, require price above the rising 100-day simple moving average, below the 20-day average, 14-day simple RSI between 30 and 48, and 14-day average true range below 8% of price. This tests buying a moderate pullback within an upward trend. RSI uses simple sums, not Wilder smoothing.
+Run the validation engine across all experiment manifests:
 
-Enter at the next open with adverse slippage. Size to approximately 0.5% of equity risk, capped at available cash with no leverage. Stop is two ATR below entry; target is three ATR above entry. Exit after ten bars or at the period end. If both stop and target appear in a candle, assume the stop occurs first. Adverse gaps fill at the open; costs apply to both sides. Gap losses may exceed planned risk.
+```powershell
+python research_validation.py --all-manifests
+```
 
-After indicator warmup, the first 60% is the development period and the final 40% is the holdout. Each starts independently with $10,000; no parameters are selected or optimized from either segment. A buy-and-hold comparison uses the same costs. Win rate counts trades profitable after costs. The Wilson interval illustrates uncertainty, although trades can be dependent. Daily close drawdown can miss intraday losses.
+Run the unit test suite:
 
-## Interpreting results
+```powershell
+python -m unittest discover -s tests
+```
 
-90% win rate is a requested target, not a feature or a guarantee. A high win rate can still lose money when losing trades are larger. Evaluate net return, drawdown, trade count, profit factor, and results across longer unseen periods. A few trades cannot establish reliability. A WAIT signal means entry conditions are absent. The latest signal is a research candidate, not proof of profitable execution.
+---
 
-This short single-market history does not establish a durable edge. Fees are illustrative: supply your actual venue/tier costs. Taxes, liquidity impact, and outages are excluded. No synthetic results are presented as market evidence.
+## Machine-Readable Validation Schema
 
-Public data documentation: https://docs.cdp.coinbase.com/exchange/reference/exchangerestapi_getproductcandles
-Investment tool limitations: https://www.investor.gov/introduction-investing/general-resources/news-alerts/alerts-bulletins/investor-alerts/investor-56
-"# f" 
+Validation outputs follow this standard JSON format:
+
+```json
+{
+  "status": "TARGET_NOT_ESTABLISHED",
+  "target_win_rate_pct": 90,
+  "research_only": true,
+  "real_money_execution": false,
+  "oos": {
+    "closed_trades": 7,
+    "wins": 6,
+    "win_rate_pct": 85.7143,
+    "win_rate_95_ci": [48.6873, 97.432],
+    "net_return_pct": 2.5892,
+    "profit_factor": 25.3272,
+    "max_drawdown_pct": 0.1064
+  },
+  "cost_stress_2x": {
+    "net_return_pct": 2.2784
+  },
+  "requirements": {
+    "minimum_oos_trades": 100,
+    "minimum_win_rate_pct": 90,
+    "positive_net_return": true,
+    "positive_2x_cost_return": true
+  },
+  "target_supported": false
+}
+```

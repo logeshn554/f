@@ -1,0 +1,22 @@
+{
+  "experiment_id": "exp_002_eth_guard",
+  "strategy_name": "eth_guard",
+  "strategy_version": "v3.0",
+  "source_hash": "c518910e28a197f0",
+  "parameters": {
+    "sma_fast": 20,
+    "sma_slow": 100,
+    "rsi_min": 30.0,
+    "rsi_max": 48.0
+  },
+  "dataset": "data/immutable/eth_daily.csv",
+  "cost_model": {
+    "taker_fee_rate": 0.0005,
+    "gst_rate": 0.18,
+    "slippage_rate": 0.0002,
+    "spread_rate": 0.0002,
+    "funding_reserve_per_8h": 0.0003,
+    "tick_size": 0.01
+  },
+  "validation_protocol": "walk_forward_5fold_embargo10"
+}

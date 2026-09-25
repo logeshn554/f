@@ -1,0 +1,20 @@
+{
+  "experiment_id": "exp_001_candle_paths",
+  "strategy_name": "candle_paths",
+  "strategy_version": "v4.0",
+  "source_hash": "9997bb3417c10375",
+  "parameters": {
+    "atr_period": 14,
+    "min_path_len": 5
+  },
+  "dataset": "data/immutable/eth_daily.csv",
+  "cost_model": {
+    "taker_fee_rate": 0.0005,
+    "gst_rate": 0.18,
+    "slippage_rate": 0.0002,
+    "spread_rate": 0.0002,
+    "funding_reserve_per_8h": 0.0003,
+    "tick_size": 0.01
+  },
+  "validation_protocol": "walk_forward_5fold_embargo10"
+}
