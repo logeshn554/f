@@ -24,13 +24,27 @@ def validate_candles(rows, min_candles=100):
     validated = []
 
     for idx, row in enumerate(rows):
-        timestamp = row.get("time") or row.get("date")
-        if not timestamp:
+        # Accept both "time" (numeric epoch or int index) and "date" (ISO string)
+        raw_ts = row.get("time") if row.get("time") is not None else row.get("date")
+        if raw_ts is None:
             raise DataError(f"Missing timestamp/date at row {idx}")
 
-        if previous_time is not None and timestamp <= previous_time:
-            raise DataError(f"Timestamps must be strictly increasing: {timestamp} <= {previous_time}")
-        previous_time = timestamp
+        # Normalised sort key: numeric timestamps → kept as-is; strings → str comparison
+        # Both types are monotonic within their own domain; we just need them comparable.
+        sort_key = raw_ts  # works for ints; for date strings ISO format sorts correctly
+
+        if previous_time is not None:
+            try:
+                is_increasing = sort_key > previous_time
+            except TypeError:
+                # Mixed types (int vs str): convert both to str for comparison
+                is_increasing = str(sort_key) > str(previous_time)
+            if not is_increasing:
+                raise DataError(
+                    f"Timestamps must be strictly increasing at row {idx}: "
+                    f"{sort_key} <= {previous_time}"
+                )
+        previous_time = sort_key
 
         o, h, l, c = float(row["open"]), float(row["high"]), float(row["low"]), float(row["close"])
         if not (math.isfinite(o) and math.isfinite(h) and math.isfinite(l) and math.isfinite(c)):
@@ -40,12 +54,13 @@ def validate_candles(rows, min_candles=100):
         if not (l <= min(o, c) <= max(o, c) <= h):
             raise DataError(f"Invalid OHLC structure at row {idx}: O={o}, H={h}, L={l}, C={c}")
 
-        item = dict(date=str(timestamp), time=timestamp, open=o, high=h, low=l, close=c)
+        item = dict(date=str(raw_ts), time=raw_ts, open=o, high=h, low=l, close=c)
         if "volume" in row:
             item["volume"] = float(row["volume"])
         validated.append(item)
 
     return validated
+
 
 
 def load_csv_candles(path, min_candles=100):

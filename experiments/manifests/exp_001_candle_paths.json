@@ -2,7 +2,7 @@
   "experiment_id": "exp_001_candle_paths",
   "strategy_name": "candle_paths",
   "strategy_version": "v4.0",
-  "source_hash": "9997bb3417c10375",
+  "source_hash": "74d26c4fcead7f69",
   "parameters": {
     "atr_period": 14,
     "min_path_len": 5
@@ -16,5 +16,6 @@
     "funding_reserve_per_8h": 0.0003,
     "tick_size": 0.01
   },
-  "validation_protocol": "walk_forward_5fold_embargo10"
+  "validation_protocol": "walk_forward_5fold_embargo10",
+  "dataset_sha256": "b9d5bc2b0bbc2b0913ba1a6149aff88429f158866f51a5e4225979f09a441ae3"
 }

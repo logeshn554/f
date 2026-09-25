@@ -4,10 +4,10 @@
   "research_only": true,
   "real_money_execution": false,
   "strategy": {
-    "name": "candle_paths",
-    "version": "v4.0",
-    "source_hash_actual": "74d26c4fcead7f69",
-    "source_hash_manifest": "74d26c4fcead7f69",
+    "name": "eth_guard",
+    "version": "v3.0",
+    "source_hash_actual": "f7a4f35f94657430",
+    "source_hash_manifest": "f7a4f35f94657430",
     "source_hash_matched": true,
     "note": ""
   },
@@ -18,23 +18,23 @@
     "note": ""
   },
   "oos": {
-    "closed_trades": 6,
-    "wins": 2,
+    "closed_trades": 3,
+    "wins": 1,
     "win_rate_pct": 33.3333,
     "win_rate_95_ci": [
-      9.6772,
-      70.0006
+      6.1492,
+      79.234
     ],
     "block_bootstrap_95_ci": [
       33.3333,
       33.3333
     ],
-    "net_return_pct": 0.7169,
-    "profit_factor": 2.0591,
-    "max_drawdown_pct": 0.4033
+    "net_return_pct": -0.3662,
+    "profit_factor": 0.6403,
+    "max_drawdown_pct": 1.0179
   },
   "cost_stress_2x": {
-    "net_return_pct": 0.47
+    "net_return_pct": -0.494
   },
   "requirements": {
     "minimum_oos_trades": 100,
@@ -61,37 +61,25 @@
         ],
         "embargo_bars": 10,
         "metrics": {
-          "closed_trades": 1,
+          "closed_trades": 0,
           "wins": 0,
-          "losses": 1,
-          "win_rate_pct": 0.0,
-          "win_rate_95_ci": [
-            0.0,
-            79.345
-          ],
-          "block_bootstrap_95_ci": {
-            "win_rate_pct": [
-              0.0,
-              0.0
-            ],
-            "net_pnl": [
-              -24.9203,
-              -24.9203
-            ]
-          },
-          "net_return_pct": -0.2492,
-          "net_pnl": -24.9203,
-          "profit_factor": 0.0,
-          "max_drawdown_pct": 0.2492,
-          "mean_trade_pnl": -24.9203,
+          "losses": 0,
+          "win_rate_pct": null,
+          "win_rate_95_ci": null,
+          "block_bootstrap_95_ci": null,
+          "net_return_pct": 0.0,
+          "net_pnl": 0.0,
+          "profit_factor": null,
+          "max_drawdown_pct": 0.0,
+          "mean_trade_pnl": null,
           "long_short": {
-            "long_trades": 1,
+            "long_trades": 0,
             "long_wins": 0,
             "short_trades": 0,
             "short_wins": 0
           },
-          "exposure_pct": 18.9189,
-          "turnover": 0.0508
+          "exposure_pct": 0.0,
+          "turnover": 0.0
         }
       },
       {
@@ -106,13 +94,13 @@
         ],
         "embargo_bars": 10,
         "metrics": {
-          "closed_trades": 1,
+          "closed_trades": 2,
           "wins": 0,
-          "losses": 1,
+          "losses": 2,
           "win_rate_pct": 0.0,
           "win_rate_95_ci": [
             0.0,
-            79.345
+            65.7619
           ],
           "block_bootstrap_95_ci": {
             "win_rate_pct": [
@@ -120,23 +108,23 @@
               0.0
             ],
             "net_pnl": [
-              -1.9836,
-              -1.9836
+              -101.7921,
+              -101.7921
             ]
           },
-          "net_return_pct": -0.0198,
-          "net_pnl": -1.9836,
+          "net_return_pct": -1.0179,
+          "net_pnl": -101.7921,
           "profit_factor": 0.0,
-          "max_drawdown_pct": 0.0198,
-          "mean_trade_pnl": -1.9836,
+          "max_drawdown_pct": 1.0179,
+          "mean_trade_pnl": -50.8961,
           "long_short": {
-            "long_trades": 0,
+            "long_trades": 2,
             "long_wins": 0,
-            "short_trades": 1,
+            "short_trades": 0,
             "short_wins": 0
           },
-          "exposure_pct": 8.1081,
-          "turnover": 0.0622
+          "exposure_pct": 18.9189,
+          "turnover": 0.1453
         }
       },
       {
@@ -151,37 +139,25 @@
         ],
         "embargo_bars": 10,
         "metrics": {
-          "closed_trades": 1,
-          "wins": 1,
+          "closed_trades": 0,
+          "wins": 0,
           "losses": 0,
-          "win_rate_pct": 100.0,
-          "win_rate_95_ci": [
-            20.655,
-            100.0
-          ],
-          "block_bootstrap_95_ci": {
-            "win_rate_pct": [
-              100.0,
-              100.0
-            ],
-            "net_pnl": [
-              70.3373,
-              70.3373
-            ]
-          },
-          "net_return_pct": 0.7034,
-          "net_pnl": 70.3373,
-          "profit_factor": 70.3373,
+          "win_rate_pct": null,
+          "win_rate_95_ci": null,
+          "block_bootstrap_95_ci": null,
+          "net_return_pct": 0.0,
+          "net_pnl": 0.0,
+          "profit_factor": null,
           "max_drawdown_pct": 0.0,
-          "mean_trade_pnl": 70.3373,
+          "mean_trade_pnl": null,
           "long_short": {
             "long_trades": 0,
             "long_wins": 0,
-            "short_trades": 1,
-            "short_wins": 1
+            "short_trades": 0,
+            "short_wins": 0
           },
-          "exposure_pct": 5.4054,
-          "turnover": 0.0594
+          "exposure_pct": 0.0,
+          "turnover": 0.0
         }
       },
       {
@@ -229,37 +205,37 @@
         ],
         "embargo_bars": 10,
         "metrics": {
-          "closed_trades": 3,
+          "closed_trades": 1,
           "wins": 1,
-          "losses": 2,
-          "win_rate_pct": 33.3333,
+          "losses": 0,
+          "win_rate_pct": 100.0,
           "win_rate_95_ci": [
-            6.1492,
-            79.234
+            20.655,
+            100.0
           ],
           "block_bootstrap_95_ci": {
             "win_rate_pct": [
-              33.3333,
-              33.3333
+              100.0,
+              100.0
             ],
             "net_pnl": [
-              28.2583,
-              28.2583
+              65.1762,
+              65.1762
             ]
           },
-          "net_return_pct": 0.2826,
-          "net_pnl": 28.2583,
-          "profit_factor": 1.6928,
-          "max_drawdown_pct": 0.4051,
-          "mean_trade_pnl": 9.4194,
+          "net_return_pct": 0.6518,
+          "net_pnl": 65.1762,
+          "profit_factor": 65.1762,
+          "max_drawdown_pct": 0.0,
+          "mean_trade_pnl": 65.1762,
           "long_short": {
-            "long_trades": 3,
+            "long_trades": 1,
             "long_wins": 1,
             "short_trades": 0,
             "short_wins": 0
           },
-          "exposure_pct": 46.3415,
-          "turnover": 0.2174
+          "exposure_pct": 24.3902,
+          "turnover": 0.0658
         }
       }
     ],
@@ -269,11 +245,11 @@
         33.3333
       ],
       "net_pnl": [
-        68.3135,
-        94.6284
+        -36.6159,
+        -36.6159
       ]
     }
   },
-  "experiment_id": "exp_001_candle_paths",
-  "manifest_path": "experiments\\manifests\\exp_001_candle_paths.json"
+  "experiment_id": "exp_002_eth_guard",
+  "manifest_path": "experiments\\manifests\\exp_002_eth_guard.json"
 }
