@@ -2,15 +2,23 @@
 Canonical Validation Authority.
 The ONLY module allowed to issue TARGET_SUPPORTED or TARGET_NOT_ESTABLISHED.
 
-Gate criteria (ALL must be satisfied):
-  1. closed_trades >= 100
-  2. observed_win_rate >= 90 %
-  3. Wilson 95% CI lower bound >= 90 %
-  4. Block-bootstrap 95% CI lower bound >= 90 %  (dependency-aware)
+Project goal (binding contract):
+  Research and validate an Ethereum paper-trading algorithm targeting at least
+  90% winning trades and positive net returns after realistic costs, using
+  chronological out-of-sample evaluation and reporting uncertainty honestly.
+  Do not claim the target is achieved without evidence or enable real-money trading.
+
+Gate criteria — ALL eight must be satisfied for TARGET_SUPPORTED:
+  1. closed_trades >= 100               (minimum sample size)
+  2. observed win rate >= 90%
+  3. Wilson 95% CI lower bound >= 90%   (standard CI)
+  4. Block-bootstrap 95% CI lower >= 90% (dependency-aware CI)
   5. OOS net return > 0
-  6. 2× cost-stress OOS net return > 0
-  7. Strategy source_hash matches manifest (code was frozen before OOS)
-  8. Dataset SHA-256 matches manifest dataset_sha256 (data was immutable)
+  6. 2x cost-stress OOS net return > 0  (all variable costs doubled)
+  7. Strategy source_hash matches manifest (code frozen before OOS)
+  8. Dataset SHA-256 matches manifest    (data immutable)
+
+Any single failure produces TARGET_NOT_ESTABLISHED.
 """
 import hashlib
 from pathlib import Path

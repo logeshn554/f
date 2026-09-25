@@ -1,75 +1,83 @@
 # Ethereum Paper-Trading Research & Validation Engine
 
-**Ethereum Paper-Trading Research & Validation Engine** — Research and validate Ethereum paper-trading algorithms targeting at least 90% winning closed trades and positive net returns after realistic trading costs. All evaluation must be chronological and out-of-sample, uncertainty must be reported explicitly, failed hypotheses must remain visible, and no real-money order execution is permitted.
+**Goal:** Research and validate an Ethereum paper-trading algorithm targeting at least 90% winning trades and positive net returns after realistic costs, using chronological out-of-sample evaluation and reporting uncertainty honestly. Do not claim the target is achieved without evidence or enable real-money trading.
+
+---
 
 > [!IMPORTANT]
-> **Current Status: TARGET NOT ESTABLISHED**
-> Evaluated strategies currently yield fewer than 100 out-of-sample closed trades or fail the 90% lower confidence interval bound. The validation gate strictly outputs `TARGET_NOT_ESTABLISHED`.
+> **Current status: TARGET NOT ESTABLISHED**
+> The latest measured result (Candle Paths, corrected for look-ahead):
+> OOS trades: 6 | Win rate: 33.33% | Net return: +0.72% | 2× cost: +0.47%
+> The 90% win-rate target is not supported by the current evidence.
 
 ---
 
-## Core Features & Design Principles
+## Design principles
 
-1. **Canonical Entry Point**: `research_validation.py` acts as the single authority allowed to output `TARGET_SUPPORTED` or `TARGET_NOT_ESTABLISHED`.
-2. **Anchored Walk-Forward Cross Validation**: 5 chronological out-of-sample folds with strict embargo periods preventing boundary data leakage.
-3. **Realistic Exchange Cost Model & 2× Stress Testing**: Models Delta Exchange public fees, 18% GST tax, spread, adverse slippage, continuous funding debits, and integer contracts. Mandatory 2× friction stress test.
-4. **Uncertainty Quantification**: Calculates both Wilson Score 95% Confidence Intervals and Block-Bootstrap 95% Confidence Intervals.
-5. **Strict Safety Boundary**: Prohibits API keys, live credentials, or order POST endpoints. Standard library Python only.
+| Principle | Implementation |
+|---|---|
+| Chronological OOS | Anchored 5-fold walk-forward, 10-bar embargo |
+| Uncertainty honest | Wilson 95% CI **and** block-bootstrap 95% CI both required |
+| Costs realistic | Delta taker fee + 18% GST + spread + slippage + funding debit |
+| 2× stress test | All variable costs doubled; must still be profitable |
+| No look-ahead | Signal uses `candles[:absolute_index]`; execution at next open |
+| Code frozen | Real SHA-256 of `.py` bytes + params in every manifest |
+| Data frozen | Dataset SHA-256 checked before every run |
+| Results preserved | Content-addressed filenames; prior runs never overwritten |
+| Paper-only | No API keys, no POST order routes, `execute_live_order()` raises |
+| 100-trade minimum | Fewer than 100 OOS closed trades → `TARGET_NOT_ESTABLISHED` |
 
 ---
 
-## Project Structure
+## Repository layout
 
 ```text
 f/
-├── data/
-│   └── immutable/               # Immutable historical candle datasets
+├── data/immutable/              # Frozen candle datasets
 ├── experiments/
-│   ├── manifests/               # Frozen experiment configuration manifests
-│   └── results/                 # Machine-readable experiment outputs & failure logs
+│   ├── manifests/               # One JSON per frozen experiment
+│   └── results/                 # Content-addressed, append-only
 ├── strategies/
-│   ├── candle_paths.py          # Candle Geometry Path strategy
-│   ├── eth_guard.py             # Trend + RSI + Volatility strategy
-│   └── baselines.py             # Baseline benchmarks (MA crossover, Buy & Hold)
+│   ├── candle_paths.py
+│   ├── eth_guard.py
+│   └── baselines.py
 ├── research/
-│   ├── chronological_split.py   # Chronological fold generator with embargo
-│   ├── walk_forward.py          # Anchored walk-forward CV engine
-│   ├── cost_model.py            # Fee/GST/slippage/funding & 2x stress model
-│   ├── uncertainty.py           # Wilson & Block-Bootstrap CIs
-│   ├── metrics.py               # Comprehensive trade performance metrics
-│   └── validation.py            # Canonical Target Gate decision authority
+│   ├── chronological_split.py   # Anchored folds + embargo
+│   ├── walk_forward.py          # Causality-correct OOS engine
+│   ├── cost_model.py            # Fee/GST/slippage/funding + 2× stress
+│   ├── uncertainty.py           # Wilson + block-bootstrap CI
+│   ├── metrics.py               # Full performance metrics
+│   └── validation.py            # Canonical TARGET gate (single authority)
 ├── paper/
-│   ├── broker.py                # Local key-free paper simulation broker
-│   ├── market_data.py           # Candle validation and loaders
-│   └── forward_evidence.py      # Prospective forward paper tracking
-├── tests/                       # Unit test suite verifying leakage, costs, and safety
-├── reports/
-│   └── validation_report.json   # Machine-readable output report
-├── RESEARCH_PROTOCOL.md         # Detailed research protocol documentation
+│   ├── broker.py                # Integer-lot paper broker, key-free
+│   ├── market_data.py
+│   └── forward_evidence.py
+├── tests/                       # 16 tests, all passing
+├── reports/validation_report.json
+├── RESEARCH_PROTOCOL.md
 └── README.md
 ```
 
 ---
 
-## Quick Start
-
-Run the validation engine across all experiment manifests:
+## Quick start
 
 ```powershell
+# Freeze source + data hashes into manifests before the first run
+python research_validation.py --all-manifests --stamp-manifest
+
+# Run all experiments
 python research_validation.py --all-manifests
-```
 
-Run the unit test suite:
-
-```powershell
+# Run tests
 python -m unittest discover -s tests
 ```
 
 ---
 
-## Machine-Readable Validation Schema
+## Output schema
 
-Validation outputs follow this standard JSON format:
+Every run writes `reports/validation_report.json`:
 
 ```json
 {
@@ -78,23 +86,28 @@ Validation outputs follow this standard JSON format:
   "research_only": true,
   "real_money_execution": false,
   "oos": {
-    "closed_trades": 7,
-    "wins": 6,
-    "win_rate_pct": 85.7143,
-    "win_rate_95_ci": [48.6873, 97.432],
-    "net_return_pct": 2.5892,
-    "profit_factor": 25.3272,
-    "max_drawdown_pct": 0.1064
+    "closed_trades": 6,
+    "win_rate_pct": 33.3333,
+    "win_rate_95_ci": [9.6772, 70.0006],
+    "block_bootstrap_95_ci": [33.3333, 33.3333],
+    "net_return_pct": 0.7169
   },
-  "cost_stress_2x": {
-    "net_return_pct": 2.2784
-  },
-  "requirements": {
-    "minimum_oos_trades": 100,
-    "minimum_win_rate_pct": 90,
-    "positive_net_return": true,
-    "positive_2x_cost_return": true
-  },
+  "cost_stress_2x": { "net_return_pct": 0.47 },
   "target_supported": false
 }
+```
+
+`"target_supported": true` is only possible when **all** of the following hold simultaneously:
+
+```python
+target_supported = (
+    closed_trades >= 100
+    and win_rate_pct >= 90.0
+    and wilson_ci_lower >= 90.0        # standard CI
+    and bootstrap_ci_lower >= 90.0     # dependency-aware CI
+    and net_return > 0.0
+    and stressed_net_return > 0.0      # 2× costs
+    and source_hash_matched            # code was frozen
+    and dataset_sha256_matched         # data was immutable
+)
 ```
